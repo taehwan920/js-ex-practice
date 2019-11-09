@@ -4,7 +4,18 @@ const toDoForm = document.querySelector(".js-toDoForm"),
 
 const TODOS_LS = "toDos"; /*이 toDos는 로컬스토리지 부분 분류값*/
 
-const toDos = [];
+var toDos = [];
+
+function deleteToDo(event) {
+  const btn = event.target;
+  const li = btn.parentNode;
+  toDoList.removeChild(li);
+  const cleanToDos = toDos.filter(function(toDo) {
+    return toDo.id !== parseInt(li.id);
+  });
+  toDos = cleanToDos;
+  saveToDos();
+}
 
 function saveToDos() {
   localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
@@ -15,6 +26,7 @@ function paintToDo(text) {
   const list = document.createElement("li");
   const delBtn = document.createElement("button");
   delBtn.innerText = "❌";
+  delBtn.addEventListener("click", deleteToDo);
   const span = document.createElement("span");
   const newId = toDos.length;
   span.innerText = text;
